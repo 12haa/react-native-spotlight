@@ -87,7 +87,7 @@ export const styles = StyleSheet.create({
   },
   termsText: {
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 14,
     color: COLORS.grey,
     maxWidth: 280,
   },
