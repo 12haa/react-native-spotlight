@@ -1,22 +1,21 @@
 import { authStyles } from '@/styles/auth/authStyles';
+import { useAuth } from '@clerk/clerk-expo';
 import { Link } from 'expo-router';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 export default function Index() {
+  const { signOut } = useAuth();
   return (
     <View style={authStyles.container}>
-      <Link
-        href="/notifications"
-        style={{
-          backgroundColor: 'red',
-          padding: 10, // Add padding for better touchable area
-          borderRadius: 5,
-        }}
-      >
-        <Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold', marginTop: 200 }}>
-          Feed Screendasdasd
+      <TouchableOpacity onPress={() => signOut()}>
+        <Text
+          style={{
+            color: 'white',
+          }}
+        >
+          SignOut
         </Text>
-      </Link>
+      </TouchableOpacity>
     </View>
   );
 }

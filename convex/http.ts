@@ -6,7 +6,7 @@ import { api } from './_generated/api';
 const http = httpRouter();
 
 http.route({
-  path: 'clerk-webhook',
+  path: '/clerk-webhook', // Added the leading slash
   method: 'POST',
   handler: httpAction(async (ctx, request) => {
     const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
@@ -52,10 +52,12 @@ http.route({
         });
       } catch (error) {
         console.log('🚀 ~ handler:httpAction ~ error:', error);
-        return  new Response('Error Create User', { status: 500 });
+        return new Response('Error Create User', { status: 500 });
       }
-              }
-        return new Response('Webhook Loaded Successfully', { status: 200 });
-
+    }
+    return new Response('Webhook Loaded Successfully', { status: 200 });
   }),
 });
+
+// Add this default export
+export default http;
