@@ -8,16 +8,14 @@ export default function Index() {
       <Link
         href="/notifications"
         style={{
-          // borderRadius: '5px',
-          backgroundColor: 'blue',
-          padding: 10,
-          margin: 10,
-          width: '80%',
-          fontSize: 20,
-          fontWeight: 'bold',
+          backgroundColor: 'red',
+          padding: 10, // Add padding for better touchable area
+          borderRadius: 5,
         }}
       >
-        Feed Screen in Tabs
+        <Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold', marginTop: 200 }}>
+          Feed Screendasdasd
+        </Text>
       </Link>
     </View>
   );

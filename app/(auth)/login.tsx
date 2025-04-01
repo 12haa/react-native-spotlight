@@ -1,6 +1,6 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { styles } from '@/styles/auth/authStyles';
+import { authStyles as styles } from '@/styles/auth/authStyles';
 import { Ionicons } from '@expo/vector-icons';
 import COLORS from '@/constants/theme';
 import useHandleLogin from '@/helpers/auth/handlerLogin';
@@ -29,14 +29,7 @@ const LoginPage = () => {
 
       {/* Login Section */}
       <View style={styles.loginSection}>
-        <TouchableOpacity
-          style={styles.googleButton}
-          onPress={() => {
-            console.log('clicked');
-            handleLogin();
-          }}
-          activeOpacity={0.8}
-        >
+        <TouchableOpacity style={styles.googleButton} onPress={handleLogin} activeOpacity={0.8}>
           <View style={styles.googleIconContainer}>
             <Ionicons name="logo-google" size={24} color="#8295F1" />
           </View>

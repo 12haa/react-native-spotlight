@@ -4,10 +4,13 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-export const styles = StyleSheet.create({
+export const authStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   brandSection: {
     alignItems: 'center',
