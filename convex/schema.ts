@@ -10,6 +10,7 @@ export default defineSchema({
     bio: v.optional(v.string()),
     image: v.string(),
     followers: v.number(),
+    following: v.number(),
     posts: v.number(),
     clerkId: v.string(),
   }).index('by_clerk_id', ['clerkId']),
@@ -49,9 +50,11 @@ export default defineSchema({
     content: v.string(),
   }).index('by_post', ['postId']),
 
-            bookmarks: defineTable({
-                        userId: v.id('users'),
-                        postId: v.id('posts'),
-
-            }).index('by_user' , ['userId']).index('by_post' , ['postId']).index('by_user_and_post' , ['userId' , 'postId'])
+  bookmarks: defineTable({
+    userId: v.id('users'),
+    postId: v.id('posts'),
+  })
+    .index('by_user', ['userId'])
+    .index('by_post', ['postId'])
+    .index('by_user_and_post', ['userId', 'postId']),
 });
