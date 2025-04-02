@@ -10,16 +10,18 @@ const TabLayout = () => {
       screenOptions={{
         tabBarShowLabel: false,
         headerShown: false,
-        tabBarActiveTintColor: COLORS.primary,
-        tabBarInactiveTintColor: COLORS.grey,
         tabBarStyle: {
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          elevation: 0,
           backgroundColor: 'black',
           borderTopWidth: 0,
-          position: 'absolute',
-          elevation: 0,
-          height: 80,
-          paddingBottom: 8,
+          height: 50,
+          // paddingBottom: 8,
         },
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Tabs.Screen

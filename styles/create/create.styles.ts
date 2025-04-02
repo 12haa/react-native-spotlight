@@ -58,10 +58,10 @@ export const styles = StyleSheet.create({
     fontSize: 16,
   },
   content: {
-    flex: 1,
+    // flex: 1,
   },
   scrollContent: {
-    flexGrow: 1,
+    // flexGrow: 1,
   },
   imageSection: {
     width: width,
@@ -92,7 +92,8 @@ export const styles = StyleSheet.create({
   },
   inputSection: {
     padding: 16,
-    flex: 1,
+    // marginTop: 12,
+    // flex: 1,
   },
   captionContainer: {
     flexDirection: 'row',
