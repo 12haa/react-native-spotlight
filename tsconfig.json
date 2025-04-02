@@ -12,12 +12,14 @@
     "strict": true,
     "target": "esnext",
     "baseUrl": ".",
-    "typeRoots": ["./node_modules/@types", "./app/types"],
+    "typeRoots": ["./node_modules/@types", "./app/types", "./convex/types"],
     "paths": {
       "@/*": ["./*"],
       "@components/*": ["./components/*"],
-      "*": ["./*"]
+      "*": ["./*"],
+      "@convex/*": ["./convex/*"],
+      "@convex/hooks/*": ["./convex/hooks/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts", "convex/**/*.ts"]
 }
