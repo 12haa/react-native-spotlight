@@ -1,5 +1,6 @@
 import { v } from 'convex/values';
 import { mutation } from '../../../_generated/server';
+
 export const createUser = mutation({
   args: {
     username: v.string(),

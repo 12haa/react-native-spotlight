@@ -16,13 +16,15 @@ import { Ionicons } from '@expo/vector-icons';
 import COLORS from '@/constants/theme';
 import * as ImagePicker from 'expo-image-picker';
 import { Image } from 'expo-image';
+import { useMutation } from 'convex/react';
+import { api } from '@/convex/_generated/api';
+import * as FileSystem from 'expo-file-system';
 
 export default function CreateScreen() {
   const router = useRouter();
-  const { user } = useUser();
+  const { user, isLoaded, isSignedIn } = useUser();
   const [caption, setCaption] = useState('');
   const [selectedImage, setSelectedImage] = useState<string | null>('');
-  console.log('🚀 ~ CreateScreen ~ selectedImage:', selectedImage);
   const [isSharing, setIsSharing] = useState<boolean>(false);
 
   const pickImage = async () => {
@@ -33,6 +35,52 @@ export default function CreateScreen() {
       quality: 1,
     });
     if (!result.canceled) setSelectedImage(result.assets[0].uri);
+  };
+  const generateUploadUrl = useMutation(api.hooks.posts.mutation.index.generateUploadUrl);
+  const createPost = useMutation(api.hooks.posts.mutation.index.createPost);
+  const handleShare = async () => {
+    if (!isLoaded || !isSignedIn) {
+      console.log('User not authenticated');
+      return;
+    }
+
+    if (!selectedImage) return;
+
+    try {
+      setIsSharing(true);
+      console.log('Generating upload URL...');
+      const uploadUrl = await generateUploadUrl();
+      console.log('Upload URL generated:', uploadUrl);
+
+      console.log('Uploading image...');
+      const uploadResult = await FileSystem.uploadAsync(uploadUrl, selectedImage, {
+        httpMethod: 'POST',
+        uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
+        mimeType: 'image/jpeg',
+      });
+      console.log('Upload result status:', uploadResult.status);
+
+      if (uploadResult.status !== 200) {
+        console.error('Upload failed with status:', uploadResult.status);
+        console.error('Response body:', uploadResult.body);
+        throw new Error('Upload Failed');
+      }
+
+      const { storageId } = JSON.parse(uploadResult.body);
+      console.log('Creating post with storageId:', storageId);
+      await createPost({
+        caption,
+        storageId,
+      });
+
+      router.push('/(tabs)');
+    } catch (error) {
+      console.error('Error sharing post:', error);
+      // Show error to user
+      alert('Failed to share post: ' + (error || 'Unknown error'));
+    } finally {
+      setIsSharing(false);
+    }
   };
 
   if (!selectedImage) {
@@ -79,7 +127,7 @@ export default function CreateScreen() {
           <TouchableOpacity
             style={[styles.shareButton, isSharing && styles.shareButtonDisabled]}
             disabled={isSharing || !selectedImage}
-            // onPress={handleShare}
+            onPress={handleShare}
           >
             {isSharing ? (
               <ActivityIndicator size="small" color={COLORS.primary} />

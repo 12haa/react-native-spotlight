@@ -6,14 +6,20 @@ import { api } from './_generated/api';
 const http = httpRouter();
 
 http.route({
-  path: '/clerk-webhook', // Added the leading slash
+  path: '/clerk-webhook',
   method: 'POST',
   handler: httpAction(async (ctx, request) => {
     const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
 
     if (!webhookSecret) {
+      console.error('Missing CLERK_WEBHOOK_SECRET');
       throw new Error('No webhook secret');
     }
+
+    // Add logging to debug webhook payload
+    const payload = await request.json();
+    console.log('Received webhook payload:', payload);
+
     //   # check HEaders
     const svix_id = request.headers.get('svix-id');
     const svix_signature = request.headers.get('svix-signature');
@@ -21,7 +27,6 @@ http.route({
     if (!svix_timestamp || !svix_signature || !svix_id) {
       throw new Error('NO SVIX HEADERS');
     }
-    const payload = await request.json();
     const body = JSON.stringify(payload);
 
     const wh = new Webhook(webhookSecret);
@@ -39,7 +44,7 @@ http.route({
     const eventType = event.type;
     if (eventType === 'user.created') {
       const { id, email_addresses, first_name, last_name, image_url } = event.data;
-      const email = email_addresses[0].email_addresses;
+      const email = email_addresses[0].email_address;
       const name = `${first_name || ''} ${last_name || ''} `.trim();
 
       try {
@@ -50,12 +55,13 @@ http.route({
           username: email.split('@')[0],
           image: image_url,
         });
+        console.log('User created successfully:', id);
       } catch (error) {
-        console.log('🚀 ~ handler:httpAction ~ error:', error);
-        return new Response('Error Create User', { status: 500 });
+        console.error('Error creating user:', error);
+        return new Response('Error Creating User', { status: 500 });
       }
     }
-    return new Response('Webhook Loaded Successfully', { status: 200 });
+    return new Response('Webhook processed successfully', { status: 200 });
   }),
 });
 

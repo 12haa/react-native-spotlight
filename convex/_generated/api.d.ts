@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as hooks_posts_mutation_index from "../hooks/posts/mutation/index.js";
 import type * as hooks_users_mutations_index from "../hooks/users/mutations/index.js";
 import type * as http from "../http.js";
 
@@ -25,6 +26,7 @@ import type * as http from "../http.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  "hooks/posts/mutation/index": typeof hooks_posts_mutation_index;
   "hooks/users/mutations/index": typeof hooks_users_mutations_index;
   http: typeof http;
 }>;

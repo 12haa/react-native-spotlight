@@ -19,9 +19,10 @@ export const createPost = mutation({
     if (!identity) {
       throw new Error('Unauthorized');
     }
+    const clerkId = identity.subject;
     const currentUser = await ctx.db
       .query('users')
-      .withIndex('by_clerk_id', (q) => q.eq('clerkId', identity.subject))
+      .withIndex('by_clerk_id', (q) => q.eq('clerkId', clerkId))
       .first();
 
     if (!currentUser) throw new Error('User Not Found!');

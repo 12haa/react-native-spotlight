@@ -8,6 +8,9 @@ import { ConvexProviderWithClerk } from 'convex/react-clerk';
 import { ConvexReactClient } from 'convex/react';
 // Get the publishable key from environment variables
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+if (!CLERK_PUBLISHABLE_KEY) {
+  throw new Error('Missing EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY');
+}
 // SecureStore implementation for Clerk token storage
 const tokenCache = {
   async getToken(key: string) {
