@@ -8,7 +8,6 @@ import { Ionicons } from '@expo/vector-icons';
 import COLORS from '@/constants/theme';
 
 export default function Posts({ posts }: { posts: Post }) {
-
   return (
     <View style={styles.post}>
       {/* Post Header */}
@@ -44,13 +43,12 @@ export default function Posts({ posts }: { posts: Post }) {
           <TouchableOpacity>
             <Ionicons name="heart-outline" size={24} color={COLORS.primary} />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons name="chatbubble-outline" size={22} color={COLORS.white} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons name="bookmark-outline" size={22} color={COLORS.white} />
-          </TouchableOpacity>
+          <Ionicons name="chatbubble-outline" size={22} color={COLORS.white} />
+          <TouchableOpacity></TouchableOpacity>
         </View>
+        <TouchableOpacity>
+          <Ionicons name="bookmark-outline" size={22} color={COLORS.white} />
+        </TouchableOpacity>
       </View>
       {/* Post Info */}
       <View style={styles.postInfo}>
