@@ -27,7 +27,10 @@ export default function Index() {
           <Ionicons name="log-out-outline" size={28} color={COLORS.white} />
         </TouchableOpacity>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 60 }}
+      >
         <ScrollView showsVerticalScrollIndicator={false} horizontal style={styles.storiesContainer}>
           {/* Feed */}
           {mockUsers.map((user) => (
