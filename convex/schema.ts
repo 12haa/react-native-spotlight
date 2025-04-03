@@ -21,6 +21,7 @@ export default defineSchema({
     caption: v.optional(v.string()),
     likes: v.number(),
     comments: v.number(),
+    author: v.string(),
   }).index('by_author', ['userId']),
   likes: defineTable({
     postId: v.id('posts'),

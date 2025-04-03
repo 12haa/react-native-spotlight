@@ -34,6 +34,7 @@ export const createPost = mutation({
       imageUrl,
       storageId: args.storageId,
       caption: args.caption,
+      author: currentUser.username,
       likes: 0,
       comments: 0,
     });
