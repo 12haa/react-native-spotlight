@@ -38,7 +38,7 @@ export default function Index() {
           ))}
         </ScrollView>
         {posts.map((post) => (
-          <Posts posts={post as Post} key={post._id} />
+          <Posts post={post as any} key={post._id} />
         ))}
       </ScrollView>
     </View>

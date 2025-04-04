@@ -9,13 +9,14 @@ export const getFeedPost = query({
       .withIndex('by_clerk_id', (q) => q.eq('clerkId', identity.subject))
       .first();
     if (!currentUser) throw new Error('User Not Found');
+
     const posts = await ctx.db.query('posts').order('desc').collect();
 
     if (posts.length === 0) return [];
 
     const postsWithInfo = await Promise.all(
       posts.map(async (post) => {
-        const postAuthor = await ctx.db.get(post.userId);
+        const postAuthor = (await ctx.db.get(post.userId))!;
         const likes = await ctx.db
           .query('likes')
           .withIndex('by_user_and_post', (q) =>
@@ -40,7 +41,6 @@ export const getFeedPost = query({
         };
       })
     );
-
-    return posts;
+    return postsWithInfo;
   },
 });

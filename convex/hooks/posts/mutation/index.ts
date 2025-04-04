@@ -45,3 +45,45 @@ export const createPost = mutation({
     return postId;
   },
 });
+
+export const toggleLike = mutation({
+  args: {
+    postId: v.id('posts'),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthorized user');
+    const currentUser = await ctx.db
+      .query('users')
+      .withIndex('by_clerk_id', (q) => q.eq('clerkId', identity.subject))
+      .first();
+    if (!currentUser) throw new Error('User Not Found');
+    const existing = await ctx.db
+      .query('likes')
+      .withIndex('by_user_and_post', (q) =>
+        q.eq('userId', currentUser._id).eq('postId', args.postId)
+      )
+      .first();
+    const post = await ctx.db.get(args.postId);
+    if (!post) throw new Error('Post Not Found');
+    if (existing) {
+      await ctx.db.delete(existing._id);
+      await ctx.db.patch(args.postId, { likes: post.likes - 1 });
+      return false;
+    } else {
+      await ctx.db.insert('likes', { userId: currentUser._id, postId: args.postId });
+      await ctx.db.patch(args.postId, { likes: post.likes + 1 });
+
+      // send Notif
+      if (currentUser._id !== post.userId) {
+        await ctx.db.insert('notifications', {
+          receiverId: post.userId,
+          senderId: currentUser._id,
+          type: 'like',
+          postId: args.postId,
+        });
+      }
+      return true;
+    }
+  },
+});
